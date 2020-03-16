@@ -33,7 +33,7 @@ Module Program
         'Grupos (ver más adelante otros tipos de datos)
         Dim items(100) As Integer           'Array (See ArrayList)
         'Nullables
-        Dim precio? As Integer
+        Dim precio? As single
 #End Region
 
 #Region "==== OPERADORES Y DIRECTIVAS DE COMPILACION ===="
@@ -77,6 +77,13 @@ Module Program
         j = 4
 
         'If/Else 
+        If (precio.HasValue) Then
+            Console.WriteLine(precio)
+        Else
+            precio = 6.7
+            Console.WriteLine($"nuevo precio {precio}")
+        End If
+
         If (i > 0 AndAlso j <> 5) OrElse k = 1 Then
             Console.WriteLine("(i > 0 AndAlso j <> 5) OrElse k = 1")
         ElseIf (i < 0) Then
