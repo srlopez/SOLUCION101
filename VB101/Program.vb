@@ -1,3 +1,5 @@
+Option Explicit On
+
 Imports System
 
 Module Program
@@ -18,7 +20,7 @@ Module Program
         Dim usint As UInteger = 4294967295  '32 bits
         Dim uslong As ULong = 1            '64 bits
         'Decimales
-        Dim descuento As Single = 0.6787    '4 bytes Coma flotante precision Sencilla
+        Dim descuento As Single = 2.6787    '4 bytes Coma flotante precision Sencilla
         Dim total As Double = 0.82          '8 bytes Coma flotante Doble precision
         Dim coronavirus As Decimal = 0.98   '16 bytes
         'Chars y Strings
@@ -31,9 +33,17 @@ Module Program
         Dim fechaNac As DateTime = New DateTime(2020, 3, 16, 13, 48, 39) 'A M D h m s
         Dim fechaDos As DateTime = #03/17/2020 11:25# 'Usamos lo que nos intrese
         'Grupos (ver más adelante otros tipos de datos)
-        Dim items(100) As Integer           'Array (See ArrayList)
+        Dim items(100) As Integer           'Array / Matriz
+        Dim matriz(,) As Integer = {{1, 2}, {3, 4}}
         'Nullables
-        Dim precio? As single
+        Dim precio? As Single
+
+        'Public - Variables accesibles
+        'Protected - Accesible en la clase, y los herederos
+        'Friend - Accesible en el 'ensamblado
+        'Protected Friend - Ensamblado + Clases que heredan de la clase donde esta declarada
+        'Private - restringida al modulo, clase o estructura donde es declarada
+
 #End Region
 
 #Region "==== OPERADORES Y DIRECTIVAS DE COMPILACION ===="
@@ -113,6 +123,22 @@ Module Program
 
         'If ternario + Cast
         j = CInt(IIf(i > 0, 1, 0))
+        miString = CStr(IIf(j > 3, 4, 0))
+        Console.WriteLine("mistring " + miString)
+        'CBool
+        'CByte
+        'CChar
+        'CDate
+        '......
+        'format string
+        Console.WriteLine(Format(descuento, "Fixed"))
+        'Currency, Fixed, Percent, Standard, Scientific, E, X, 
+        Console.WriteLine(Format(descuento, "###.###"))
+        'format Dia y Horas
+        'G, D, d, T, s
+        'dd, MM, hh, mm, ss, ....
+
+
 #End Region
 
 
