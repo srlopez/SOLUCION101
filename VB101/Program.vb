@@ -4,22 +4,39 @@ Module Program
     Sub Main(args As String())
         Console.WriteLine("Hello VB.NET 101!")
 
-        '====== DECLARACION DE VARIABLES Y Constantes =======
+#Region "====== DECLARACION DE VARIABLES Y Constantes ======="
         Const noUsadaInt As Integer = 30    'Constante
         Dim estaFacturado As Boolean = True 'Booleano
-        Dim soloChar As Char                'Caracter de 16 bit Unicode 
+        'Enteros con signo
+        Dim sb As SByte = 127               '8bits -128 .. 127
+        Dim sshort As Short = 32.767        '16 bits -32.768 .. 32.767
         Dim i, j, k As Integer              'Enteros con signo 32-bit 
         Dim facturaId As Long = 0           'Entero con signo 64-bit
-        Dim total As Double = 0             'Coma flotante Doble precision
-        Dim descuento As Single = 0         'Coma flotante precision Sencilla
+        'Enteros sin signo
+        Dim usbyte As Byte = 255            '8 bits 255
+        Dim usshort As UShort = 65535       '16 bits
+        Dim usint As UInteger = 4294967295  '32 bits
+        Dim uslong As ULong = 1            '64 bits
+        'Decimales
+        Dim descuento As Single = 0.6787    '4 bytes Coma flotante precision Sencilla
+        Dim total As Double = 0.82          '8 bytes Coma flotante Doble precision
+        Dim coronavirus As Decimal = 0.98   '16 bytes
+        'Chars y Strings
+        Dim soloChar As Char                'Caracter de 16 bit Unicode 
         Dim miString As String = ""         'String sin nada
         Dim miString2 As String = String.Empty 'String        
         Dim miString3 As String = "saludos"
+        'Fechas
         Dim hoy As DateTime = DateTime.Now  'Hoy ahora!!!!
         Dim fechaNac As DateTime = New DateTime(2020, 3, 16, 13, 48, 39) 'A M D h m s
+        Dim fechaDos As DateTime = #03/17/2020 11:25# 'Usamos lo que nos intrese
+        'Grupos (ver más adelante otros tipos de datos)
         Dim items(100) As Integer           'Array (See ArrayList)
+        'Nullables
+        Dim precio? As Integer
+#End Region
 
-        '==== OPERADORES Y DIRECTIVAS DE COMPILACION ====
+#Region "==== OPERADORES Y DIRECTIVAS DE COMPILACION ===="
 #Const VALOR = 1
 #If VALOR = 0 Then
         Operadores Computacionales
@@ -52,7 +69,9 @@ Module Program
 #If VALOR = 1 Then
         soloChar = "a"
 #End If
-        '====== COMPARACIONES E INTERPOLACION DE STRINGS =======
+#End Region
+
+#Region "====== COMPARACIONES E INTERPOLACION DE STRINGS ======="
         i = 12
         k = 1
         j = 4
@@ -87,6 +106,7 @@ Module Program
 
         'If ternario + Cast
         j = CInt(IIf(i > 0, 1, 0))
+#End Region
 
 
     End Sub
