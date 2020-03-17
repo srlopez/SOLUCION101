@@ -143,11 +143,191 @@ Module Program
         'dd, MM, hh, mm, ss, ....
 
 #End Region
+
+#Region "====== CICLOS ======="
+        'While 
+        While i < 20
+            i += 1
+            Console.Write(".")
+        End While
+
+        'For + If
+        For l As Integer = 0 To 9
+            If (l = 2) Then Continue For
+            Console.Write(l)
+            If (l > 4) Then Exit For 'Exit loop
+        Next
+
+        'For each + List
+        Dim lst As New List(Of String) From {"abc", "def", "ghi"}
+        For Each item As String In lst
+            Console.Write("_")
+            Debug.WriteLine(item)
+        Next
+
+        'Do 
+        Do
+            Console.Write("-")
+            i += 1
+        Loop Until i > 9
+        Console.WriteLine("")
+#End Region
+
+#Region "====== MANEJO DE ERRORES ======="
+        Dim s As String = ""
+        Dim x As Integer = 5
+        Dim y As Integer = 0
+
+        Try
+            x = x \ y '<--- OJO! Aquí salta el Error!!!!
+        Catch ex As Exception
+            s = "Exception Error:" + vbCrLf _
+                + "Target: " + ex.TargetSite.ToString _
+                + vbCrLf + "Error: " _
+                + ex.Message.ToString + vbCrLf _
+                + "Trace: " + ex.StackTrace.ToString
+            Debug.WriteLine("[" + s + "]")
+
+        Finally
+            Console.WriteLine($"{{{s}}}")
+            Console.WriteLine("Siempre paso por aquí")
+        End Try
+#End Region
+
+#Region "==== TIPOS DE DATOS AVANZADOS ====="
+        ' Array
+        Dim aitems(10) As String
+        aitems(1) = "luis"
+        aitems(0) = "pedro"
+        aitems(2) = "sonia"
+
+        ' ArrayList
+        Dim cuidado As New ArrayList
+        cuidado.Add(5)
+        cuidado.Add("5")
+        Console.WriteLine(cuidado(0))
+
+        'List
+        Dim list As New List(Of Integer)({2, 3, 5, 7})
+        list.Add(1)
+        list.Add(4)
+        list.Add(6)
+        list.Add(8)
+        list.RemoveAt(5)
+        list.RemoveRange(0, 1)
+        Console.WriteLine("list.count: {0}", list.Count)
+        Console.WriteLine("ultimo:  {0}", list(list.Count - 1))
+        Console.WriteLine("tercero:  {0} y sexto: {1}", list.Item(3), list.Item(5))
+        list.Clear()
+
+
+        ' Colas
+        Dim q As Queue(Of Integer) = New Queue(Of Integer)()
+        q.Enqueue(5)
+        q.Enqueue(10)
+        q.Enqueue(15)
+        q.Enqueue(20)
+        i = q.Dequeue()
+        If q.Peek Then
+            Console.WriteLine($"Cola de {q.Count} elementos")
+        End If
+
+        'Pilas
+        Dim miStack As Stack = New Stack()
+        miStack.Push("Hello")
+        miStack.Push("World")
+        miStack.Push("!")
+        miStack.Push("1DAW3")
+        miString = miStack.Pop()
+        Console.WriteLine("miStack.Count:    {0} para {1}", miStack.Count, miString)
+#End Region
+
+#Region "==== MODULOS, CLASES Y LIBRERIAS ======="
+
         ' uso de un emsamblado = Librería
         miString2 = "holamundo informatico"
         Console.WriteLine(MisUtilidades.Cases.ToUpperImpar(miString2))
         Console.WriteLine(MisUtilidades.Cases.ToUpperPar(miString2))
 
+        Console.WriteLine("invocando1...{0}", MisFunciones.miDato1)
+        Console.WriteLine("invocando2...{0}", MisFunciones.SuperSuma(10, 11))
+        Console.WriteLine("invocando3...{0}", MiModulo.miDato1)
+        Console.WriteLine("invocando4...{0}", MiModulo.SuperSumaDos(10, 11))
+
+        ' En un Archivo de Clase
+        Dim e As ClaseVacia = New ClaseVacia()
+
+        ' En un Módulo dentro de este Archivo
+        Dim b As MiClaseB = New MiClaseB(4)
+        Console.WriteLine(b.Val2())
+        b.Display()
+        b.Saludos()
+#End Region
+
     End Sub
 
 End Module
+
+#Region "Anexos"
+Module MisFunciones
+
+    Public miDato1 As Integer = 10
+    Public miDato2 As Integer = 20
+
+    Public Function SuperSuma(ByVal i1 As Integer, ByVal i2 As Integer)
+        Return i2 + i1
+    End Function
+
+End Module
+
+Class MiClaseA
+    Private _val As Integer
+
+    Public Sub New(ByVal value As Integer)
+        _val = value * 2
+        'Me._val = value * 2
+    End Sub
+
+    Public Function Val() As Integer
+        Return _val
+    End Function
+
+    Public Overloads Function Val2() As Integer
+        Return _val * 2
+    End Function
+
+    Public Sub Display()
+        Console.WriteLine(_val)
+    End Sub
+
+    Public Overridable Sub Hello()
+        Console.WriteLine("Hello desde MiClaseA")
+    End Sub
+
+    Public Sub Saludos()
+        MyClass.Hello() ' Desde la clase en que se invoca
+        Me.Hello()      ' Dede la instancia
+    End Sub
+
+End Class
+
+
+
+Class MiClaseB : Inherits MiClaseA
+    Private _val2 As Integer
+
+    Public Sub New(ByVal value As Integer)
+        MyBase.New(value)
+        _val2 = value
+    End Sub
+
+    Public Function Val() As Integer
+        Return _val2
+    End Function
+
+    Public Overrides Sub Hello()
+        Console.WriteLine("Hello desde MiClaseB")
+    End Sub
+End Class
+
+#End Region
