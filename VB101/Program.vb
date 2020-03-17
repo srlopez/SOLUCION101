@@ -143,6 +143,10 @@ Module Program
         'dd, MM, hh, mm, ss, ....
 
 #End Region
+        ' uso de un emsamblado = Librería
+        miString2 = "holamundo informatico"
+        Console.WriteLine(MisUtilidades.Cases.ToUpperImpar(miString2))
+        Console.WriteLine(MisUtilidades.Cases.ToUpperPar(miString2))
 
     End Sub
 
