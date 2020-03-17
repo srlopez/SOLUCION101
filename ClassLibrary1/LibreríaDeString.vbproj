@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <RootNamespace></RootNamespace>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>LibreríaDeUtilidades</AssemblyName>
-  </PropertyGroup>
-
-</Project>
