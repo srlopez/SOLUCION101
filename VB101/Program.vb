@@ -1,6 +1,7 @@
 Option Explicit On
 
 Imports System
+Imports System.Net.Http
 
 Module Program
     Sub Main(args As String())
@@ -255,6 +256,7 @@ Module Program
 #End Region
 
 #Region "===== INTRO STRINGS ===="
+        'https://docs.microsoft.com/es-es/dotnet/visual-basic/language-reference/functions/string-functions
         Dim string1 = "HOLA MUNDO 1DAW3"
         Console.WriteLine(Right(string1, 3))
         Console.WriteLine(Left(string1, 3))
@@ -265,7 +267,8 @@ Module Program
 
 #Region "====== MODULOS, CLASES Y LIBRERIAS ======="
 
-        ' uso de un emsamblado = Librería
+        ' Uso de un ensamblado = Librería
+        ' Añadir proyecto en 'Referencias'
         miString2 = "holamundo informatico"
         Console.WriteLine(MisUtilidades.Cases.ToUpperImpar(miString2))
         Console.WriteLine(MisUtilidades.Cases.ToUpperPar(miString2))
@@ -282,12 +285,86 @@ Module Program
 
         ' En un Módulo dentro de este Archivo
         Dim b As MiClaseB = New MiClaseB(4)
-        Console.WriteLine(b.Val2())
+        Console.WriteLine($"b.Val()={b.Val()}")
+        Console.WriteLine($"b.Valx2()={b.Valx2()}")
         b.Display()
         b.Saludos()
 #End Region
 
+#Region "====== TECNICAS DE PROGRAMACION ====="
+
+        '===== RECURSIVIDAD =====
+        Console.WriteLine($"Factorial de 5 = {Factorial(5)}")
+
+        '===== METODOS ASINCRONOS =====
+        Console.WriteLine("Pesadossss en MARCHAAA .....")
+        LeoUnaUrl("https://docs.microsoft.com/dotnet")
+        LanzoUnProcesoPesado()
+        Console.WriteLine("Pulsa <ENTER> para cancelar")
+        Console.ReadLine()
+
+#End Region
+
+    End Sub 'MAIN
+
+#Region "====== EXTRAS.... ======"
+    '===== REFERENCIAS, VALORES, DINÁMICOS
+    Private Sub Calc(ByVal i As Integer, ByRef j As Integer)
+        ' modificar aquí j, cambia el valor del parámetro enviado
     End Sub
+
+    Enum OrderStatus As Integer 'Enumeración de valores
+        NewOrder = 1    '1
+        Picked          '2
+        Shipped         '3
+    End Enum
+
+    Function Factorial(n As Integer) As Integer
+        If n <= 1 Then
+            Return 1
+        End If
+        Return Factorial(n - 1) * n
+    End Function
+
+    Async Sub LanzoUnProcesoPesado()
+        'invoco directamente
+        Dim i As Int32 = Await RunUnProcesoPesadoTask()
+        Console.WriteLine($"Tarea Pesada: {i}")
+
+        ' invoco recogiendo la tarea en una variable
+        Dim getIntTask As Task(Of Int32) = RunUnProcesoPesadoTask()
+        Dim intTask As Int32 = Await getIntTask
+        Console.WriteLine($"Tarea {getIntTask.Id} Status: {getIntTask.Status}")
+        Console.WriteLine($"Tarea {getIntTask.Id} Pesada: {intTask}-{getIntTask.Result}")
+    End Sub
+
+    Async Sub LeoUnaUrl(url As String)
+        'https://docs.microsoft.com/es-es/dotnet/visual-basic/programming-guide/concepts/async/
+        ' Clausula USING
+        Using client As New HttpClient()
+            Dim getStringTask As Task(Of String) = client.GetStringAsync(url)
+            Console.WriteLine("getStringTask Working...")
+            Dim urlContents As String = Await getStringTask
+            Console.WriteLine($"urlContents.Length: {urlContents.Length}")
+        End Using
+    End Sub
+
+    Public Async Function RunUnProcesoPesadoTask() As Task(Of Int32)
+        Console.WriteLine("Pesado running ...")
+        'Inicializar la clase Random  
+        Dim Random As New Random()
+        Try
+            Await Task.Delay(3000)
+        Catch ex As Exception
+            Console.WriteLine(ex.Message)
+        Finally
+            Console.WriteLine("Pesado finalizado")
+        End Try
+
+        Return Random.Next(1, 100)  ' generar un random entre rango
+    End Function
+#End Region
+
 End Module
 
 #Region "Anexos"
@@ -304,52 +381,52 @@ End Module
 
 Class MiClaseA
     'propiedad
-    Private _val As Integer
+    Private _val_A As Integer
 
     ' https://docs.microsoft.com/es-es/dotnet/visual-basic/programming-guide/program-structure/me-my-mybase-and-myclass#me
     Public Sub New(ByVal value As Integer)
-        _val = value * 2
+        _val_A = value * 2
         'Me._val = value * 2
-        Console.WriteLine(MyBase.ToString)
+        Console.WriteLine($"NewA MyBase.ToString {MyBase.ToString}")
     End Sub
 
     Public Function Val() As Integer
-        Return _val
+        Return _val_A
     End Function
 
-    Public Overloads Function Val2() As Integer
-        Return _val * 2
+    Public Overloads Function Valx2() As Integer
+        Return _val_A * 2
     End Function
 
     Public Sub Display()
-        Console.WriteLine(_val)
+        Console.WriteLine($"Display {_val_A}")
     End Sub
 
-    Public Overridable Sub Hello()
-        Console.WriteLine("Hello desde MiClaseA")
+    Public Overridable Sub Hello(param As String)
+        Console.WriteLine($"A Hello invocado con '{param}'")
     End Sub
 
     Public Sub Saludos()
-        MyClass.Hello() ' Desde la clase en que se invoca A
-        Me.Hello()      ' Dede la instancia B
+        MyClass.Hello("A MyClass.Hello") ' Desde la clase en que se invoca A
+        Me.Hello("A Me.Hello")           ' Desde la instancia B
     End Sub
 
 End Class
 
 Class MiClaseB : Inherits MiClaseA
-    Private _val2 As Integer
+    Private _val_B As Integer
 
     Public Sub New(ByVal value As Integer)
         MyBase.New(value)
-        _val2 = value
+        _val_B = value
     End Sub
 
     Public Function Val() As Integer
-        Return _val2
+        Return _val_B
     End Function
 
-    Public Overrides Sub Hello()
-        Console.WriteLine("Hello desde MiClaseB")
+    Public Overrides Sub Hello(param As String)
+        Console.WriteLine($"B Hello invocado con '{param}'")
     End Sub
 End Class
 
