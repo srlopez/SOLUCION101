@@ -47,7 +47,7 @@ Module Program
         'Private - restringida al modulo, clase o estructura donde es declarada
 #End Region
 
-#Region "==== OPERADORES Y DIRECTIVAS DE COMPILACION ===="
+#Region "====== OPERADORES Y DIRECTIVAS DE COMPILACION ===="
 #Const VALOR = 1
 #If VALOR = 0 Then
         Operadores Computacionales
@@ -126,7 +126,7 @@ Module Program
         End Select
 
         'If ternario + Cast
-        j = CInt(IIf(i > 0, 1, 0))
+        j = IIf(i > 0, 1, 0)
         miString = CStr(IIf(j > 3, 4, 0))
         Console.WriteLine("mistring " + miString)
         'CBool
@@ -152,10 +152,10 @@ Module Program
         End While
 
         'For + If
-        For l As Integer = 0 To 9
-            If (l = 2) Then Continue For
+        For l As Integer = 0 To 19 Step 2
+            If (l = 3) Then Continue For
             Console.Write(l)
-            If (l > 4) Then Exit For 'Exit loop
+            If (l > 6) Then Exit For 'Exit loop
         Next
 
         'For each + List
@@ -194,7 +194,7 @@ Module Program
         End Try
 #End Region
 
-#Region "==== TIPOS DE DATOS AVANZADOS ====="
+#Region "====== TIPOS DE DATOS AVANZADOS ====="
         ' Array
         Dim aitems(10) As String
         aitems(1) = "luis"
@@ -208,6 +208,7 @@ Module Program
         Console.WriteLine(cuidado(0))
 
         'List
+        Dim lst1 As New List(Of String) From {"abc", "def", "ghi"}
         Dim list As New List(Of Integer)({2, 3, 5, 7})
         list.Add(1)
         list.Add(4)
@@ -242,7 +243,7 @@ Module Program
         Console.WriteLine("miStack.Count:    {0} para {1}", miStack.Count, miString)
 #End Region
 
-#Region "==== MODULOS, CLASES Y LIBRERIAS ======="
+#Region "====== MODULOS, CLASES Y LIBRERIAS ======="
 
         ' uso de un emsamblado = Librería
         miString2 = "holamundo informatico"
