@@ -145,11 +145,14 @@ Module Program
 #End Region
 
 #Region "====== CICLOS ======="
+        Console.WriteLine("===== CICLOS =====")
+
         'While 
         While i < 20
             i += 1
             Console.Write(".")
         End While
+        Console.WriteLine("")
 
         'For + If
         For l As Integer = 0 To 19 Step 2
@@ -157,13 +160,17 @@ Module Program
             Console.Write(l)
             If (l > 6) Then Exit For 'Exit loop
         Next
+        Console.WriteLine("")
 
         'For each + List
         Dim lst As New List(Of String) From {"abc", "def", "ghi"}
         For Each item As String In lst
             Console.Write("_")
+            Console.WriteLine(item)
+
             Debug.WriteLine(item)
         Next
+        Console.WriteLine("")
 
         'Do 
         Do
@@ -171,6 +178,8 @@ Module Program
             i += 1
         Loop Until i > 9
         Console.WriteLine("")
+        Console.WriteLine("===== FIN CICLOS =====")
+
 #End Region
 
 #Region "====== MANEJO DE ERRORES ======="
@@ -179,23 +188,23 @@ Module Program
         Dim y As Integer = 0
 
         Try
-            x = x \ y '<--- OJO! Aquí salta el Error!!!!
+            x = x / y '<--- OJO! Aquí salta el Error!!!!
         Catch ex As Exception
             s = "Exception Error:" + vbCrLf _
                 + "Target: " + ex.TargetSite.ToString _
                 + vbCrLf + "Error: " _
                 + ex.Message.ToString + vbCrLf _
                 + "Trace: " + ex.StackTrace.ToString
-            Debug.WriteLine("[" + s + "]")
+            Console.WriteLine("[" + s + "]")
 
         Finally
-            Console.WriteLine($"{{{s}}}")
+            Console.WriteLine($"---{{{s}}}---")
             Console.WriteLine("Siempre paso por aquí")
         End Try
 #End Region
 
 #Region "====== TIPOS DE DATOS AVANZADOS ====="
-        ' Array
+        ' Array = Vectores
         Dim aitems(10) As String
         aitems(1) = "luis"
         aitems(0) = "pedro"
@@ -218,7 +227,7 @@ Module Program
         list.RemoveRange(0, 1)
         Console.WriteLine("list.count: {0}", list.Count)
         Console.WriteLine("ultimo:  {0}", list(list.Count - 1))
-        Console.WriteLine("tercero:  {0} y sexto: {1}", list.Item(3), list.Item(5))
+        Console.WriteLine("tercero:  {0} y sexto: {1}", list(3), list.Item(5))
         list.Clear()
 
 
@@ -229,6 +238,8 @@ Module Program
         q.Enqueue(15)
         q.Enqueue(20)
         i = q.Dequeue()
+        Console.WriteLine($"Elemento desencolado: {i}")
+
         If q.Peek Then
             Console.WriteLine($"Cola de {q.Count} elementos")
         End If
@@ -243,6 +254,15 @@ Module Program
         Console.WriteLine("miStack.Count:    {0} para {1}", miStack.Count, miString)
 #End Region
 
+        Dim string1 = "HOLA MUNDO 1DAW3"
+        Console.WriteLine(Right(string1, 3))
+        Console.WriteLine(Left(string1, 3))
+        Console.WriteLine(Mid(string1, 3, 3))
+        Mid(string1, 3, 3) = "12345"
+        Console.WriteLine(string1)
+
+
+
 #Region "====== MODULOS, CLASES Y LIBRERIAS ======="
 
         ' uso de un emsamblado = Librería
@@ -254,6 +274,8 @@ Module Program
         Console.WriteLine("invocando2...{0}", MisFunciones.SuperSuma(10, 11))
         Console.WriteLine("invocando3...{0}", MiModulo.miDato1)
         Console.WriteLine("invocando4...{0}", MiModulo.SuperSumaDos(10, 11))
+
+        Console.WriteLine(miModulo2.hola("santi"))
 
         ' En un Archivo de Clase
         Dim e As ClaseVacia = New ClaseVacia()
@@ -282,11 +304,13 @@ Module MisFunciones
 End Module
 
 Class MiClaseA
+    'propiedad
     Private _val As Integer
 
     Public Sub New(ByVal value As Integer)
         _val = value * 2
         'Me._val = value * 2
+        Console.WriteLine(MyBase.ToString)
     End Sub
 
     Public Function Val() As Integer
@@ -306,8 +330,8 @@ Class MiClaseA
     End Sub
 
     Public Sub Saludos()
-        MyClass.Hello() ' Desde la clase en que se invoca
-        Me.Hello()      ' Dede la instancia
+        MyClass.Hello() ' Desde la clase en que se invoca A
+        Me.Hello()      ' Dede la instancia B
     End Sub
 
 End Class

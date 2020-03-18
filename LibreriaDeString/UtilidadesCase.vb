@@ -4,6 +4,8 @@ Namespace MisUtilidades
     Public Module Cases
         <Extension>
         Public Function ToUpperImpar(str As String) As String
+            ToUpperImpar = "no implementado"
+
             Dim resp As String = LCase(str)
             For i = 1 To resp.Length Step 2
                 Mid(resp, i, 1) = UCase(GetChar(resp, i))
