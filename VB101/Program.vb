@@ -306,6 +306,7 @@ Class MiClaseA
     'propiedad
     Private _val As Integer
 
+    ' https://docs.microsoft.com/es-es/dotnet/visual-basic/programming-guide/program-structure/me-my-mybase-and-myclass#me
     Public Sub New(ByVal value As Integer)
         _val = value * 2
         'Me._val = value * 2
