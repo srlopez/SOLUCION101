@@ -254,14 +254,14 @@ Module Program
         Console.WriteLine("miStack.Count:    {0} para {1}", miStack.Count, miString)
 #End Region
 
+#Region "===== INTRO STRINGS ===="
         Dim string1 = "HOLA MUNDO 1DAW3"
         Console.WriteLine(Right(string1, 3))
         Console.WriteLine(Left(string1, 3))
         Console.WriteLine(Mid(string1, 3, 3))
         Mid(string1, 3, 3) = "12345"
         Console.WriteLine(string1)
-
-
+#End Region
 
 #Region "====== MODULOS, CLASES Y LIBRERIAS ======="
 
@@ -335,8 +335,6 @@ Class MiClaseA
     End Sub
 
 End Class
-
-
 
 Class MiClaseB : Inherits MiClaseA
     Private _val2 As Integer
