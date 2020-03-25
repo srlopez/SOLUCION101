@@ -65,7 +65,7 @@ Class Valor
     ' Shared permite invocar sin crear Objeto  = Static
 
     Public Shared Function esPar(n As UInteger) As Boolean
-        esPar = True
+        esPar = (n Mod 2 = 0)
     End Function
 
     Public Shared Function esImpar(n As UInteger) As Boolean
@@ -79,7 +79,7 @@ Class Valor
     Public Shared Function esPrimo(n As UInteger) As Boolean
         esPrimo = False
         If n < 2 Then Exit Function
-        If n Mod 2 = 0 Then Exit Function
+        If esPar(n) Then Exit Function
         Dim i As Integer = 3
         While i * i <= n
             If n Mod i = 0 Then Exit Function

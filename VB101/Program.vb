@@ -341,6 +341,7 @@ Module Program
     Async Sub LeoUnaUrl(url As String)
         'https://docs.microsoft.com/es-es/dotnet/visual-basic/programming-guide/concepts/async/
         ' Clausula USING
+        ' Librería System.Net.Http
         Using client As New HttpClient()
             Dim getStringTask As Task(Of String) = client.GetStringAsync(url)
             Console.WriteLine("getStringTask Working...")
@@ -354,6 +355,8 @@ Module Program
         'Inicializar la clase Random  
         Dim Random As New Random()
         Try
+            ' No hago nada más que esperar 3 seg.
+            ' Simulo un cálculo
             Await Task.Delay(3000)
         Catch ex As Exception
             Console.WriteLine(ex.Message)
@@ -361,7 +364,7 @@ Module Program
             Console.WriteLine("Pesado finalizado")
         End Try
 
-        Return Random.Next(1, 100)  ' generar un random entre rango
+        Return Random.Next(1, 100)  ' devuelvo un random en un rango
     End Function
 #End Region
 
