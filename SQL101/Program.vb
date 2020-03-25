@@ -6,23 +6,18 @@ Module Program
     Private myCmd As SqlCommand
     Private myReader As SqlDataReader
     Private row As String
-    Private connectionstring() As String = {
-    "Data Source=.\SQLEXPRESS;Initial Catalog=BASE;Persist Security Info=True;User ID=sa;Password=1234",
-    "Data Source=localhost;Initial Catalog=BASE;User ID=sa;Password=Pa88word",
-        "Data Source=192.168.122.1;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
-    }
-    Private activeconn As Int16 = 2
+    Private connectionString As String =
+    "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
 
-    ' docker exec mssql /opt/mssql-tools/bin/sqlcmd  -U SA -P Pa88word -d BASE -Q "SELECT * FROM ARTICULOS" -S localhost
 
     Sub Main(args As String())
         Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €
         Console.WriteLine("Hello SQL-World!!!")
-        Console.WriteLine(connectionstring(activeconn))
+        Console.WriteLine(connectionString)
 
 
         'Connection y abrimos
-        myConn = New SqlConnection(connectionstring(activeconn))
+        myConn = New SqlConnection(connectionString)
         myConn.Open()
 
         'Comando a ejecutar
@@ -37,38 +32,6 @@ Module Program
             PRECIO NUMERIC(5,2)
         )"
         myCmd.ExecuteNonQuery()
-
-
-        'Primero INSERT
-        myCmd.CommandText = "INSERT INTO ARTICULOS (NOMBRE, PRECIO) VALUES (@Nombre, @Precio)"
-        myCmd.Parameters.AddWithValue("@Nombre", "DESDE VB.NET")
-        myCmd.Parameters.AddWithValue("@Precio", 111.99)
-        myCmd.ExecuteNonQuery()
-
-        'Segundo UPDATE
-        myCmd.CommandText = "UPDATE ARTICULOS SET PRECIO = @UPrecio WHERE NOMBRE LIKE @Casi"
-        myCmd.Parameters.AddWithValue("@Casi", "DESDE%")
-        myCmd.Parameters.AddWithValue("@UPrecio", 99.11)
-        myCmd.ExecuteNonQuery()
-
-        'Tercero SELECT
-        myCmd.CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO FROM ARTICULOS"
-        myReader = myCmd.ExecuteReader()
-        Do While myReader.Read()
-            'Encadeno las columnas.
-            row = myReader.GetInt32(0) & vbTab &
-                myReader.GetDecimal(2) & vbTab &
-                myReader.GetString(1)
-            'Muestro en Consola
-            Console.WriteLine(row)
-        Loop
-        myReader.Close()
-
-        'Cuarto DELETE
-        myCmd.CommandText = "DELETE ARTICULOS WHERE NOMBRE LIKE @Casi"
-        myCmd.ExecuteNonQuery()
-
-        myConn.Close()
 
         '''''''''''''''''''
         ' Con Using y With
