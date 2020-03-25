@@ -63,6 +63,19 @@ End Module
 
 Class Valor
     ' Shared permite invocar sin crear Objeto  = Static
+
+    Public Shared Function esPar(n As UInteger) As Boolean
+        esPar = True
+    End Function
+
+    Public Shared Function esImpar(n As UInteger) As Boolean
+        esImpar = True
+    End Function
+
+    Public Shared Function esRacional(n As Double) As Boolean
+        'esRacional = True
+        Return True
+    End Function
     Public Shared Function esPrimo(n As UInteger) As Boolean
         esPrimo = False
         If n < 2 Then Exit Function
