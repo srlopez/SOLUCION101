@@ -123,9 +123,9 @@ Module Program
                 Console.WriteLine("i es un jaleo")
             Case Else 'Default
                 i = i + 1
-                Console.WriteLine($"i  es {i}")
-                Console.WriteLine("i  es {0}{2}{1}", i, j, k)
-                Console.WriteLine("i  es " + CStr(i))
+                Console.WriteLine($"i es {i}")
+                Console.WriteLine("i es {0}{2}{1}", i, j, k)
+                Console.WriteLine("i es " + CStr(i))
         End Select
 
         'If ternario + Cast
@@ -257,7 +257,7 @@ Module Program
         Console.WriteLine("miStack.Count:    {0} para {1}", miStack.Count, miString)
 #End Region
 
-#Region "===== INTRO STRINGS ===="
+#Region "====== INTRO STRINGS ===="
         'https://docs.microsoft.com/es-es/dotnet/visual-basic/language-reference/functions/string-functions
         Dim string1 = "HOLA MUNDO 1DAW3"
         Console.WriteLine(Right(string1, 3))
@@ -297,24 +297,28 @@ Module Program
         '===== ByVAL,byREF =====
         i = 7
         j = 7
-        Calc(i, j)
-        Console.WriteLine($"ByVAL ByREF i:{i} j:{j}")
+        Console.WriteLine($"before ByVAL ByREF i:{i} j:{j}")
+        i = Calc(i, j)
+        Console.WriteLine($"after ByVAL ByREF i:{i} j:{j}")
 
         '===== RECURSIVIDAD =====
         Console.WriteLine($"Factorial de 5 = {Factorial(5)}")
 
-        '===== Lambda ===== FUNCIONES/SUbroutinas SIN NOMBRE
+        '===== Lambda ===== FUNCIONES/Subroutinas SIN NOMBRE
+        'Function sumo1(n) As Integer
+        '   sumo1 = n + 1
+        'End Function
+
         Dim sumo1 = Function(n) n + 1
-        Dim resto2 = Function(n)
+        Dim resto2 = Function(n) As Integer
                          Return n - 2
                      End Function
-
         Dim print = Sub(l) Console.WriteLine(l)
+
         print($"Lambdas: {sumo1(7)}, {resto2(10)}")
+        print($"Lambdas2: {sumo1(7)}, {resto2(10)}, {(Function(n) n + 3)(7)}")
 
-
-
-        '===== METODOS ASINCRONOS =====
+        '===== METODOS ASINCRONOS = TAREA = TASK =====
         Console.WriteLine("Pesadossss en MARCHAAA .....")
         LeoUnaUrl("https://docs.microsoft.com/dotnet")
         LanzoUnProcesoPesado()
@@ -322,19 +326,23 @@ Module Program
         Console.ReadLine()
 
 #End Region
-
     End Sub 'MAIN
+
 
 #Region "====== EXTRAS.... ======"
     '===== REFERENCIAS, VALORES, DINÁMICOS
-    Private Sub Calc(ByVal i As Integer, ByRef j As Integer)
+    Private Function Calc(ByVal i As Integer,
+                          ByRef j As Integer) As Integer
         ' modificar aquí j, cambia el valor del parámetro enviado
+        Console.WriteLine($"inside1 ByVAL ByREF i:{i} j:{j}")
         i += 1
-        j += 1
-    End Sub
+        j += 1 '<- se modifica j 
+        Console.WriteLine($"inside2 ByVAL ByREF i:{i} j:{j}")
+        Return i
+    End Function
 
     Enum PedidoEstado As Integer 'Enumeración de valores
-        Nuevo = 7    '1
+        Nuevo = 1    '1
         EnProceso    '2
         Enviado      '3
     End Enum
@@ -343,6 +351,7 @@ Module Program
         If n <= 1 Then
             Return 1
         End If
+        'tail recursion 
         Return Factorial(n - 1) * n
     End Function
 
@@ -362,6 +371,7 @@ Module Program
         'https://docs.microsoft.com/es-es/dotnet/visual-basic/programming-guide/concepts/async/
         ' Clausula USING
         ' Librería System.Net.Http
+
         Using client As New HttpClient()
             Dim getStringTask As Task(Of String) = client.GetStringAsync(url)
             Console.WriteLine("getStringTask Working...")
