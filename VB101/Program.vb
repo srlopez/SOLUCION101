@@ -328,7 +328,6 @@ Module Program
 #End Region
     End Sub 'MAIN
 
-
 #Region "====== EXTRAS.... ======"
     '===== REFERENCIAS, VALORES, DINÁMICOS
     Private Function Calc(ByVal i As Integer,
