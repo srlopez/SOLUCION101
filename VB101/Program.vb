@@ -40,6 +40,8 @@ Module Program
         'Nullables
         Dim precio? As Single
 
+        'Enum definido más abajo
+        Dim estado As PedidoEstado = PedidoEstado.EnProceso
 
         'Public - Variables accesibles
         'Protected - Accesible en la clase, y los herederos
@@ -292,9 +294,25 @@ Module Program
 #End Region
 
 #Region "====== TECNICAS DE PROGRAMACION ====="
+        '===== ByVAL,byREF =====
+        i = 7
+        j = 7
+        Calc(i, j)
+        Console.WriteLine($"ByVAL ByREF i:{i} j:{j}")
 
         '===== RECURSIVIDAD =====
         Console.WriteLine($"Factorial de 5 = {Factorial(5)}")
+
+        '===== Lambda ===== FUNCIONES/SUbroutinas SIN NOMBRE
+        Dim sumo1 = Function(n) n + 1
+        Dim resto2 = Function(n)
+                         Return n - 2
+                     End Function
+
+        Dim print = Sub(l) Console.WriteLine(l)
+        print($"Lambdas: {sumo1(7)}, {resto2(10)}")
+
+
 
         '===== METODOS ASINCRONOS =====
         Console.WriteLine("Pesadossss en MARCHAAA .....")
@@ -311,12 +329,14 @@ Module Program
     '===== REFERENCIAS, VALORES, DINÁMICOS
     Private Sub Calc(ByVal i As Integer, ByRef j As Integer)
         ' modificar aquí j, cambia el valor del parámetro enviado
+        i += 1
+        j += 1
     End Sub
 
-    Enum OrderStatus As Integer 'Enumeración de valores
-        NewOrder = 1    '1
-        Picked          '2
-        Shipped         '3
+    Enum PedidoEstado As Integer 'Enumeración de valores
+        Nuevo = 7    '1
+        EnProceso    '2
+        Enviado      '3
     End Enum
 
     Function Factorial(n As Integer) As Integer
