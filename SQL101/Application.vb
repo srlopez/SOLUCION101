@@ -1,16 +1,17 @@
 Imports System.Data.SqlClient
 
-Module Program
-    'Create ADO.NET objects.
-    Private myConn As SqlConnection
-    Private myCmd As SqlCommand
-    Private myReader As SqlDataReader
-    Private row As String
-    Private connectionString As String =
-    "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
+Public Class Application
 
+    '=== Module Program
+    '=== Sub Main
+    Public Shared Sub Main(args As String())
 
-    Sub Main(args As String())
+        'Create ADO.NET objects.
+        Dim myConn As SqlConnection
+        Dim myCmd As SqlCommand
+        Dim row As String
+        Dim connectionString As String = "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
+
         Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €
         Console.WriteLine("Hello SQL-World!!!")
         Console.WriteLine(connectionString)
@@ -32,12 +33,14 @@ Module Program
             PRECIO NUMERIC(5,2)
         )"
         myCmd.ExecuteNonQuery()
+        myCmd.Dispose()
+        myConn.Close()
 
         '''''''''''''''''''
         ' Con Using y With
         '''''''''''''''''''
 
-        Using conn = New SqlConnection(connectionstring(activeconn))
+        Using conn = New SqlConnection(connectionString)
             conn.Open()
             Using cmd = conn.CreateCommand
                 With cmd
@@ -62,6 +65,8 @@ Module Program
 
                     .CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO FROM ARTICULOS"
                     Using reader = cmd.ExecuteReader()
+                        'Dim myReader As SqlDataReader
+
                         Console.WriteLine("IDART NOMBRE                            PRECIO")
                         Console.WriteLine("===== ============================== =========")
                         With reader
@@ -81,10 +86,11 @@ Module Program
                     Catch ex As Exception
                         Console.WriteLine(ex.Message.ToString(), "Error DELETE")
                     End Try
-
                 End With
             End Using
         End Using
 
     End Sub
-End Module
+
+    '=== End Module
+End Class
