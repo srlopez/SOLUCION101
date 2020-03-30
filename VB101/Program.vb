@@ -326,6 +326,7 @@ Module Program
         Console.ReadLine()
 
 #End Region
+
     End Sub 'MAIN
 
 #Region "====== EXTRAS.... ======"
@@ -375,6 +376,8 @@ Module Program
             Dim getStringTask As Task(Of String) = client.GetStringAsync(url)
             Console.WriteLine("getStringTask Working...")
             Dim urlContents As String = Await getStringTask
+            Console.WriteLine($"Tarea {getStringTask.Id} Status: {getStringTask.Status}")
+            Console.WriteLine($"Tarea {getStringTask.Id} url: {urlContents.Length}-{getStringTask.Result}")
             Console.WriteLine($"urlContents.Length: {urlContents.Length}")
         End Using
     End Sub
@@ -400,6 +403,7 @@ Module Program
 End Module
 
 #Region "Anexos"
+
 Module MisFunciones
 
     Public miDato1 As Integer = 10
