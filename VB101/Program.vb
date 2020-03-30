@@ -375,10 +375,11 @@ Module Program
         Using client As New HttpClient()
             Dim getStringTask As Task(Of String) = client.GetStringAsync(url)
             Console.WriteLine("getStringTask Working...")
+            Console.WriteLine($"Tarea {getStringTask.Id} Status1: {getStringTask.Status}")
             Dim urlContents As String = Await getStringTask
-            Console.WriteLine($"Tarea {getStringTask.Id} Status: {getStringTask.Status}")
-            Console.WriteLine($"Tarea {getStringTask.Id} url: {urlContents.Length}-{getStringTask.Result}")
-            Console.WriteLine($"urlContents.Length: {urlContents.Length}")
+            Console.WriteLine($"Tarea {getStringTask.Id} Status2: {getStringTask.Status}")
+            Console.WriteLine($"Tarea {getStringTask.Id} url.length: {urlContents.Length}") '-{getStringTask.Result}")
+
         End Using
     End Sub
 

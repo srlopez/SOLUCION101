@@ -79,6 +79,8 @@ Class Valor
     Public Shared Function esPrimo(n As UInteger) As Boolean
         esPrimo = False
         If n < 2 Then Exit Function
+        If n = 2 Then Return True
+
         If esPar(n) Then Exit Function
         Dim i As Integer = 3
         While i * i <= n
