@@ -16,7 +16,7 @@ Module Program
                 ' No hago nada
             End Try
 
-#Const ASYNC = 0
+#Const ASYNC = 1
 #If ASYNC = 0 Then
             Dim t0 = Now
             Console.WriteLine($"{i} #Primos {contaPrimos(i)}")
@@ -87,7 +87,7 @@ Class Valor
             If n Mod i = 0 Then Exit Function
             i += 2
         End While
-        Debug.Print(n)
+        'Debug.Print(n)
         esPrimo = True
     End Function
 End Class
