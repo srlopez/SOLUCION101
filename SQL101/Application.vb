@@ -10,9 +10,10 @@ Public Class Application
         Dim myConn As SqlConnection
         Dim myCmd As SqlCommand
         Dim row As String
-        Dim connectionString As String = "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
+        Dim connectionString As String = 
+            "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
 
-        Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €
+        'Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €
         Console.WriteLine("Hello SQL-World!!!")
         Console.WriteLine(connectionString)
 
@@ -47,12 +48,19 @@ Public Class Application
                     .CommandText = "INSERT INTO ARTICULOS (NOMBRE, PRECIO) VALUES (@Nombre, @Precio)"
                     .Parameters.AddWithValue("@Nombre", "USING VB.NET")
                     .Parameters.AddWithValue("@Precio", 222.99)
+
                     Try
                         .ExecuteNonQuery()
                     Catch ex As Exception
                         Console.WriteLine(ex.Message.ToString(), "Error INSERT")
                     End Try
 
+                    '-----
+                    .Parameters.Clear()
+                    .Parameters.AddWithValue("@Nombre", "DATO DOS")
+                    .Parameters.AddWithValue("@Precio", 111.11)
+                    .ExecuteNonQuery()
+                    '----
 
                     .CommandText = "UPDATE ARTICULOS SET PRECIO = @UPrecio WHERE NOMBRE LIKE @Casi"
                     .Parameters.AddWithValue("@Casi", "USING%")
@@ -64,7 +72,7 @@ Public Class Application
                     End Try
 
                     .CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO FROM ARTICULOS"
-                    Using reader = cmd.ExecuteReader()
+                    Using reader = .ExecuteReader()
                         'Dim myReader As SqlDataReader
 
                         Console.WriteLine("IDART NOMBRE                            PRECIO")
@@ -73,7 +81,7 @@ Public Class Application
                             Do While .Read()
                                 'New CultureInfo("es-ES"), 
                                 row = String.Format("{0,5} {1,-30} {2,9:C2}",
-                          .GetInt32(0), .GetString(1), .GetDecimal(2))
+                                       .GetInt32(0), .GetString(1), .GetDecimal(2))
                                 Console.WriteLine(row)
                             Loop
                             '.Close()
