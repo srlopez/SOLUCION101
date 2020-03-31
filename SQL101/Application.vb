@@ -1,7 +1,7 @@
 Imports System.Data.SqlClient
 Imports System.Data.OleDb
 
-#Const SQLSERVER = 0
+#Const SQLSERVER = 1
 Public Class Application
 
     Public Shared Sub Main(args As String())
