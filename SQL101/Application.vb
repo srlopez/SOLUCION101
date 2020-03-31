@@ -1,106 +1,166 @@
 Imports System.Data.SqlClient
+Imports System.Data.OleDb
 
+#Const SQLSERVER = 0
 Public Class Application
 
-    '=== Module Program
-    '=== Sub Main
     Public Shared Sub Main(args As String())
 
-        'Create ADO.NET objects.
+
+#If SQLSERVER = 1 Then
+        Dim wildChar = "%"
+        Dim connectionString As String =
+            "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
         Dim myConn As SqlConnection
         Dim myCmd As SqlCommand
-        Dim row As String
-        Dim connectionString As String = 
-            "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
+        myConn = New SqlConnection(connectionString)
 
-        'ACCESS 
+      
+#Else
+        Dim wildChar = "%" '"*"
+        Dim connectionString As String =
+            "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\BASE.accdb;Persist Security Info=False"
+        Dim myConn As OleDbConnection
+        Dim myCmd As OleDbCommand
+        myConn = New OleDbConnection(connectionString)
 
-        'Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €
+
+        'The Problem is that OleDb (and Odbc too) does not support named parameters.
+
+
+#End If
+
+        Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €
         Console.WriteLine("Hello SQL-World!!!")
         Console.WriteLine(connectionString)
-
-
-        'Connection y abrimos
-        myConn = New SqlConnection(connectionString)
-        myConn.Open()
-
-        'Comando a ejecutar
-        myCmd = myConn.CreateCommand
-
-        'Create TABLE
-        myCmd.CommandText = "
-        DROP TABLE IF EXISTS ARTICULOS
-        CREATE TABLE ARTICULOS(
-            IDARTICULO INT IDENTITY,
-            NOMBRE NVARCHAR(30),
-            PRECIO NUMERIC(5,2)
-        )"
-        myCmd.ExecuteNonQuery()
-        myCmd.Dispose()
-        myConn.Close()
 
         '''''''''''''''''''
         ' Con Using y With
         '''''''''''''''''''
 
-        Using conn = New SqlConnection(connectionString)
-            conn.Open()
-            Using cmd = conn.CreateCommand
-                With cmd
-                    .CommandText = "INSERT INTO ARTICULOS (NOMBRE, PRECIO) VALUES (@Nombre, @Precio)"
-                    .Parameters.AddWithValue("@Nombre", "USING VB.NET")
-                    .Parameters.AddWithValue("@Precio", 222.99)
+        Using myConn ' hace un close/dispose del objeto = nos ayuda a evitar errores
+            myConn.Open()
+            myCmd = myConn.CreateCommand
+            Using myCmd
+                With myCmd ' nos ayuda a teclear menos
 
+                    ' CREATE
                     Try
+#If SQLSERVER = 1 Then
+                    .CommandText = "
+                        DROP TABLE IF EXISTS ARTICULOS
+                        CREATE TABLE ARTICULOS(
+                            IDARTICULO INT IDENTITY,
+                            NOMBRE NVARCHAR(30),
+                            PRECIO NUMERIC(5,2)
+                        )"
+#Else
+                        .CommandText = "
+                        CREATE TABLE ARTICULOS(
+                            IDARTICULO AUTOINCREMENT PRIMARY KEY,
+                            NOMBRE CHAR(30),
+                            PRECIO DECIMAL(5,2)
+                        )"
+#End If
+
                         .ExecuteNonQuery()
                     Catch ex As Exception
-                        Console.WriteLine(ex.Message.ToString(), "Error INSERT")
+                        ' Posible error la TABLA ya EXISTE (ACCESS)
+                        Console.WriteLine($"Error: {ex.Message}")
+                        .CommandText = "DELETE FROM ARTICULOS"
+                        .ExecuteNonQuery()
                     End Try
 
-                    '-----
-                    .Parameters.Clear()
-                    .Parameters.AddWithValue("@Nombre", "DATO DOS")
-                    .Parameters.AddWithValue("@Precio", 111.11)
-                    .ExecuteNonQuery()
+                    ' SCALAR
+                    .CommandText = "SELECT COUNT(*) FROM ARTICULOS"
+                    Console.WriteLine($"CREATE COUNT(*) { .ExecuteScalar()}")
+
+                    ' INSERT
+                    ' @Nombre, @Precio
+                    Try
+                        .CommandText = "INSERT INTO ARTICULOS 
+                                    (NOMBRE, PRECIO) VALUES 
+                                    (@Nombre, @Precio)"
+                        .Parameters.AddWithValue("@Nombre", "USING VB.NET")
+                        .Parameters.AddWithValue("@Precio", 222.99)
+                        .ExecuteNonQuery()
+
+                        .Parameters.Clear()
+                        .Parameters.AddWithValue("@Nombre", "DATO DOS")
+                        .Parameters.AddWithValue("@Precio", 111.11)
+                        .ExecuteNonQuery()
+                    Catch ex As Exception
+                        Console.WriteLine("Error INSERT ", ex.Message.ToString())
+                    End Try
+
+                    ' SCALAR
+                    .CommandText = "SELECT COUNT(*) FROM ARTICULOS"
+                    Console.WriteLine($"INSERT COUNT(*) { .ExecuteScalar()}")
+
                     '----
 
-                    .CommandText = "UPDATE ARTICULOS SET PRECIO = @UPrecio WHERE NOMBRE LIKE @Casi"
-                    .Parameters.AddWithValue("@Casi", "USING%")
-                    .Parameters.AddWithValue("@UPrecio", 22.99)
+                    ' UPDATE
+                    ' @UPrecio @Casi
+                    Dim slike = "US" + wildChar
+                    Dim sql As String = "UPDATE ARTICULOS" &
+                                        "  SET PRECIO = @UPrecio" &
+                                        "  WHERE NOMBRE LIKE @like"
+
                     Try
+                        Console.WriteLine("SQL: " + sql)
+                        .CommandText = sql
+                        .Parameters.Clear()
+                        'OleDb necesita los parámetros en orden
+                        .Parameters.AddWithValue("@UPrecio", 16.8)
+                        .Parameters.AddWithValue("@like", slike)
                         .ExecuteNonQuery()
                     Catch ex As Exception
-                        Console.WriteLine(ex.Message.ToString(), "Error UPDATE")
+                        Console.WriteLine("Error UPDATE ", ex.Message.ToString())
                     End Try
 
-                    .CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO FROM ARTICULOS"
+                    ' BUCLE SELECT
+                    .CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO 
+                                    FROM ARTICULOS"
                     Using reader = .ExecuteReader()
-                        'Dim myReader As SqlDataReader
-
                         Console.WriteLine("IDART NOMBRE                            PRECIO")
                         Console.WriteLine("===== ============================== =========")
                         With reader
+                            Dim row As String
                             Do While .Read()
                                 'New CultureInfo("es-ES"), 
                                 row = String.Format("{0,5} {1,-30} {2,9:C2}",
-                                       .GetInt32(0), .GetString(1), .GetDecimal(2))
+                                reader(0), reader(1), reader(2))
+
+                                '.GetInt32(0), .GetString(1), .GetDecimal(2))
                                 Console.WriteLine(row)
                             Loop
-                            '.Close()
                         End With
                     End Using
 
-                    .CommandText = "DELETE ARTICULOS WHERE NOMBRE LIKE @Casi"
+                    ' DELETE
                     Try
+                        .CommandText = "DELETE FROM ARTICULOS 
+                                    WHERE NOMBRE LIKE @like"
+                        .Parameters.Clear()
+                        .Parameters.AddWithValue("@like", slike)
                         .ExecuteNonQuery()
                     Catch ex As Exception
-                        Console.WriteLine(ex.Message.ToString(), "Error DELETE")
+                        Console.WriteLine("Error DELETE ", ex.Message.ToString())
                     End Try
+
+                    ' SCALAR
+                    .CommandText = "SELECT COUNT(*) FROM ARTICULOS"
+                    Console.WriteLine($"DELETE COUNT(*) { .ExecuteScalar()}")
+
                 End With
             End Using
         End Using
 
     End Sub
 
-    '=== End Module
 End Class
+
+
+
+
+

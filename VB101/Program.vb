@@ -255,16 +255,27 @@ Module Program
         miStack.Push("1DAW3")
         miString = miStack.Pop()
         Console.WriteLine("miStack.Count:    {0} para {1}", miStack.Count, miString)
+
+        'Structs
+        ' https://docs.microsoft.com/es-es/dotnet/visual-basic/programming-guide/language-features/data-types/structures-and-classes
+        Dim luis As empleado
+        luis.id = 1
+        luis.nombre = "luis"
+        luis.departamento = 1
+        luis.edad = 40
+        Console.WriteLine($"Salario de Luis = {luis.Salario}")
 #End Region
 
 #Region "====== INTRO STRINGS ===="
         'https://docs.microsoft.com/es-es/dotnet/visual-basic/language-reference/functions/string-functions
         Dim string1 = "HOLA MUNDO 1DAW3"
+        Dim string2 = "1DAW3"
+
         Console.WriteLine(Right(string1, 3))
         Console.WriteLine(Left(string1, 3))
         Console.WriteLine(Mid(string1, 3, 3))
         Mid(string1, 3, 3) = "12345"
-        Console.WriteLine(string1)
+        Console.WriteLine("indexOf: {0}", string1.IndexOf(string2))
 #End Region
 
 #Region "====== MODULOS, CLASES Y LIBRERIAS ======="
@@ -347,6 +358,26 @@ Module Program
         Enviado      '3
     End Enum
 
+    Public Structure empleado
+        Public id As Integer
+        Public nombre As String
+        Public departamento As Integer
+        Public edad As Integer
+        Public antiguedad As Integer
+        Public Function Salario()
+            Salario = 1500
+            Select Case edad
+                Case Is < 18
+                    Debug.WriteLine("{nombre} es Pequeño")
+                Case 18 To 50
+                    Salario *= 1.05
+                    'etc...
+                Case Else 'Default
+                    Salario *= 1.15
+            End Select
+        End Function
+
+    End Structure
     Function Factorial(n As Integer) As Integer
         If n <= 1 Then
             Return 1
