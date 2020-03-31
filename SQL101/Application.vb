@@ -13,6 +13,8 @@ Public Class Application
         Dim connectionString As String = 
             "Data Source=slimbook;Initial Catalog=BASE;User ID=sa;Password=Pa88word"
 
+        'ACCESS 
+
         'Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €
         Console.WriteLine("Hello SQL-World!!!")
         Console.WriteLine(connectionString)
