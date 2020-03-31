@@ -24,9 +24,15 @@ Module Program
         Console.WriteLine("Hello WebServer World!")
         Console.WriteLine(String.Format("System.Net.HttpListener.IsSupported: {0}", HttpListener.IsSupported))
         If args.Count() > 0 Then
-            Port = CInt(args(1))
+            Port = CInt(args(0))
             urls(0) = "http://*:" + Port.ToString + "/"
         End If
+        Console.WriteLine("   >>> Access Denied")
+        Console.WriteLine("   >>> run HttpListener in non-admin mode")
+        Console.WriteLine("   >>> desde consola y SuperUsuario")
+        Console.WriteLine("   >>> netsh http add urlacl url=" + urls(0) + " user=Todos")
+        Console.WriteLine()
+        Console.WriteLine(urls(0))
 
         RunServer(urls, connectionstring)
     End Sub
@@ -57,19 +63,26 @@ Module Program
                         "
         myCmd.ExecuteNonQuery()
 
-
         Try
             ' Start
+            Console.WriteLine("Start ")
+
             listener.Start()
             Console.WriteLine("Listening on " + urls(0) + "...")
+            Console.WriteLine("prueba " + urls(0) + "api/users")
+            Console.WriteLine("prueba " + urls(0) + "api/users/n")
+            Console.WriteLine("prueba " + urls(0) + "api/users/12 OR 1=1")
+
 
             Do While True
                 Dim response As HttpListenerResponse = Nothing
                 Try
+
                     ' Aviso: GetContext bloquea mientras espera
                     Dim context As HttpListenerContext = listener.GetContext()
                     ' solicitud
                     Dim request = context.Request
+
 
                     ' Cabecera de Request
                     'For Each key As String In request.Headers.AllKeys
@@ -77,8 +90,8 @@ Module Program
                     'Next
 
                     ' Importantes
-                    Console.WriteLine(request.Url)
-                    Console.WriteLine(request.HttpMethod)
+                    Console.WriteLine($"request.Url        {request.Url}")
+                    Console.WriteLine($"request.HttpMethod {request.HttpMethod}")
 
                     'Dim uri As New Uri(HttpUtility.UrlDecode(request.Url.ToString))
                     Dim uri As New Uri(request.Url.ToString)
@@ -86,7 +99,7 @@ Module Program
                     'Dim protocol As String = uri.Scheme     ' http
                     'Dim host As String = uri.Host           ' localhost
                     'Dim port As Integer = uri.Port          ' 4444
-                    Dim path As String = uri.LocalPath   ' /lo que pongamos
+                    Dim path As String = uri.LocalPath       ' /lo que pongamos
                     'Dim querystring As String = uri.Query   ' ?val=1&value=normal
                     'Dim hash As String = uri.Fragment       ' despues del #
 
@@ -98,29 +111,33 @@ Module Program
                         Case "/api/users", "/api/users/"
                             myCmd.CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO 
                                                 FROM ARTICULOS"
-                            responseString = "<HTML><BODY>Users</br>"
+                            responseString = "<HTML><BODY>Muchos Users</br>"
                             responseString += myCmd.CommandText + "</br>"
+
                             myReader = myCmd.ExecuteReader()
                             Do While myReader.Read()
                                 rows += 1
                                 'Leo las columnas.
                                 row = myReader.GetInt32(0).ToString & "  -  " &
                                     myReader.GetDecimal(2).ToString & "  -  " &
-                                    myReader.GetString(1) & "</br>"
+                                    myReader.GetString(1)
                                 'y encadeno
                                 Console.WriteLine(row)
-                                responseString += row
+                                responseString += row & "</br>"
                             Loop
                             myReader.Close()
-                            responseString += rows.ToString & " rows</br>"
+                            responseString += "#" & rows.ToString & " rows</br>"
                             responseString += "</BODY></HTML>"
 
                         Case "/api/users/0" To "/api/users/99999"
                             Dim strArr() As String
                             strArr = path.Split("/")
+                            Console.WriteLine("Último Param: " + strArr(strArr.Length - 1))
+
                             myCmd.CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO 
                                                 FROM ARTICULOS WHERE IDARTICULO =" & strArr(strArr.Length - 1)
-                            responseString = "<HTML><BODY>User</br>"
+
+                            responseString = "<HTML><BODY>1 User</br>"
                             responseString += myCmd.CommandText + "</br>"
                             myReader = myCmd.ExecuteReader()
                             Do While myReader.Read()
@@ -163,9 +180,14 @@ Module Program
         Catch ex As HttpListenerException
             Console.WriteLine(ex.Message)
         Finally
-            ' Stop listening for requests.
             listener.Close()
-            Console.WriteLine("Done Listening...")
+            Console.WriteLine("Fin Listening...")
         End Try
+
+        myCmd.Dispose()
+        myConn.Close()
+        myConn.Dispose()
+
     End Sub
+
 End Module

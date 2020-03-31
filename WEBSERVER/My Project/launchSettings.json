@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "WEBSERVER": {
-      "commandName": "Project",
-      "commandLineArgs": "3333"
-    }
-  }
-}
