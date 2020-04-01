@@ -1,5 +1,6 @@
 Imports System
-
+' Programa inspirado en:
+' https://hackernoon.com/how-to-lose-an-it-job-in-10-minutes-3d63213c8370
 Module Program
     Sub Main(args As String())
 
@@ -43,18 +44,25 @@ Module Program
     End Sub
 
     Function test(a As String, b As String) As Boolean
+#Const ORDERED = 2
+#If ORDERED = 1 Then
         ' tokio            kioto
-        'Dim ax2 = a.ToLower + a.ToLower
+        Dim ax2 = a.ToLower + a.ToLower
         ' tokiotokio
-        'Return (ax2.IndexOf(b.ToLower) >= 0)
-
+        Return (ax2.IndexOf(b.ToLower) >= 0)
+#Else
+        ' Como Lambda
         Dim charsOrdered = Function(s As String) As String
+                               ' Obtengo los Bytes de un Array
                                Dim sBytes() As Byte = System.Text.Encoding.ASCII.GetBytes(s)
+                               ' Ordeno el array
                                Array.Sort(Of Byte)(sBytes)
+                               ' Convierto el Array a String
                                Return System.Text.ASCIIEncoding.ASCII.GetString(sBytes)
                            End Function
 
         Return charsOrdered(a.ToLower) = charsOrdered(b.ToLower)
+#End If
     End Function
 
 
