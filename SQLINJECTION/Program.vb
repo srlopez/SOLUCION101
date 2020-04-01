@@ -7,6 +7,8 @@ Imports System.Data.SqlClient
 
 Module Program
 
+    ' ASP.NET 
+
     'Http
     Dim Port As Integer = 4444
     Dim urls() As String = {"http://*:" + Port.ToString + "/"}
@@ -111,8 +113,8 @@ Module Program
                         Case "/api/users", "/api/users/"
                             myCmd.CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO 
                                                 FROM ARTICULOS"
-                            responseString = "<HTML><BODY>Muchos Users</br>"
-                            responseString += myCmd.CommandText + "</br>"
+                            responseString = "<HTML><BODY><h1>Muchos Users</h1><h2>"
+                            responseString += myCmd.CommandText + "</h2>"
 
                             myReader = myCmd.ExecuteReader()
                             Do While myReader.Read()
@@ -126,7 +128,7 @@ Module Program
                                 responseString += row & "</br>"
                             Loop
                             myReader.Close()
-                            responseString += "#" & rows.ToString & " rows</br>"
+                            responseString += "<h2>#" & rows.ToString & " rows</h2>"
                             responseString += "</BODY></HTML>"
 
                         Case "/api/users/0" To "/api/users/99999"
@@ -137,8 +139,8 @@ Module Program
                             myCmd.CommandText = "SELECT IDARTICULO, NOMBRE, PRECIO 
                                                 FROM ARTICULOS WHERE IDARTICULO =" & strArr(strArr.Length - 1)
 
-                            responseString = "<HTML><BODY>1 User</br>"
-                            responseString += myCmd.CommandText + "</br>"
+                            responseString = "<HTML><BODY><h1>1 User</h1><h2>"
+                            responseString += myCmd.CommandText + "</h2>"
                             myReader = myCmd.ExecuteReader()
                             Do While myReader.Read()
                                 rows += 1

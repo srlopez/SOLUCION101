@@ -14,8 +14,6 @@ Public Class Application
         Dim myConn As SqlConnection
         Dim myCmd As SqlCommand
         myConn = New SqlConnection(connectionString)
-
-      
 #Else
         Dim wildChar = "%" '"*"
         Dim connectionString As String =
@@ -23,11 +21,6 @@ Public Class Application
         Dim myConn As OleDbConnection
         Dim myCmd As OleDbCommand
         myConn = New OleDbConnection(connectionString)
-
-
-        'The Problem is that OleDb (and Odbc too) does not support named parameters.
-
-
 #End If
 
         Console.OutputEncoding = Text.Encoding.UTF8 'Para permitir el €

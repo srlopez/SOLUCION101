@@ -44,9 +44,19 @@ Module Program
 
     Function test(a As String, b As String) As Boolean
         ' tokio            kioto
-        Dim ax2 = a.ToLower + a.ToLower
+        'Dim ax2 = a.ToLower + a.ToLower
         ' tokiotokio
-        Return (ax2.IndexOf(b.ToLower) >= 0)
+        'Return (ax2.IndexOf(b.ToLower) >= 0)
+
+        Dim charsOrdered = Function(s As String) As String
+                               Dim sBytes() As Byte = System.Text.Encoding.ASCII.GetBytes(s)
+                               Array.Sort(Of Byte)(sBytes)
+                               Return System.Text.ASCIIEncoding.ASCII.GetString(sBytes)
+                           End Function
+
+        Return charsOrdered(a.ToLower) = charsOrdered(b.ToLower)
     End Function
+
+
 End Module
 
