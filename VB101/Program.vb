@@ -309,7 +309,7 @@ Module Program
         i = 7
         j = 7
         Console.WriteLine($"before ByVAL ByREF i:{i} j:{j}")
-        i = Calc(i, j)
+        k = Calc(i, j)
         Console.WriteLine($"after ByVAL ByREF i:{i} j:{j}")
 
         '===== RECURSIVIDAD =====
@@ -344,12 +344,12 @@ Module Program
     '===== REFERENCIAS, VALORES, DINÁMICOS
     Private Function Calc(ByVal i As Integer,
                           ByRef j As Integer) As Integer
-        ' modificar aquí j, cambia el valor del parámetro enviado
+        ' modificar aquí dentro j, cambia el valor del parámetro enviado fuera
         Console.WriteLine($"inside1 ByVAL ByREF i:{i} j:{j}")
         i += 1
         j += 1 '<- se modifica j 
         Console.WriteLine($"inside2 ByVAL ByREF i:{i} j:{j}")
-        Return i
+        Calc = i
     End Function
 
     Enum PedidoEstado As Integer 'Enumeración de valores
