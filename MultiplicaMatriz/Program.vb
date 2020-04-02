@@ -37,13 +37,12 @@ Module Program
         ' Matrices cuadradas
         Dim m1 = PromptMatrix("m1")
         Dim items = m1.Count
-
         ShowMatrix("m1", m1)
+
         Dim m2 = PromptMatrix("m2", items)
         ShowMatrix("m2", m2)
 
         Dim p = New List(Of List(Of Integer)) From {}
-
 
         For i As Integer = 0 To items - 1
             p.Add(New List(Of Integer) From {})
@@ -104,7 +103,7 @@ Module Program
         Console.WriteLine($"== {name} ==")
         For i As Integer = 0 To m.Count - 1
             For j As Integer = 0 To m(i).Count - 1
-                Console.Write($"{m(i)(j),3}")
+                Console.Write($"{m(i)(j),4}")
             Next
             Console.WriteLine()
         Next

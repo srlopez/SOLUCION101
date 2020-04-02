@@ -60,7 +60,8 @@ Module Program
                                ' Convierto el Array a String
                                Return System.Text.ASCIIEncoding.ASCII.GetString(sBytes)
                            End Function
-
+        ' London = dlnnoo
+        ' Donlon = dlnnoo
         Return charsOrdered(a.ToLower) = charsOrdered(b.ToLower)
 #End If
     End Function
