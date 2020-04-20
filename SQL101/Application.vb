@@ -6,7 +6,6 @@ Public Class Application
 
     Public Shared Sub Main(args As String())
 
-
 #If SQLSERVER = 1 Then
         Dim wildChar = "%"
         Dim connectionString As String =
