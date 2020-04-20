@@ -1,7 +1,7 @@
 Imports System.Data.SqlClient
 Imports System.Data.OleDb
 
-#Const SQLSERVER = 1
+#Const SQLSERVER = 0
 Public Class Application
 
     Public Shared Sub Main(args As String())
@@ -17,7 +17,7 @@ Public Class Application
 #Else
         Dim wildChar = "%" '"*"
         Dim connectionString As String =
-            "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\BASE.accdb;Persist Security Info=False"
+            "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\..\BASE.accdb;Persist Security Info=False"
         Dim myConn As OleDbConnection
         Dim myCmd As OleDbCommand
         myConn = New OleDbConnection(connectionString)
